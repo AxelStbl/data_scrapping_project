@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, \
-    StaleElementReferenceException
+    StaleElementReferenceException, ElementNotInteractableException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
@@ -40,6 +40,23 @@ def remove_sign_up_prompt(driver):
         pass
 
 
+def remove_recommended_jobs(driver):
+    """Sometimes it appears """
+    try:
+        driver.find_element_by_class_name("selected").click()
+    except ElementClickInterceptedException:
+        pass
+
+    driver.implicitly_wait(.1)
+
+    try:
+        driver.find_element_by_class_name("secondaryCTAButton").click()  # clicking the X
+    except NoSuchElementException:
+        pass
+    except ElementNotInteractableException:
+        pass
+
+
 def scrape_data_company(driver, elt, click=True):
     """Will click on the company name and each category so we can then store data"""
     # TODO move this when calling the function
@@ -48,6 +65,7 @@ def scrape_data_company(driver, elt, click=True):
 
     time.sleep(2)
     remove_sign_up_prompt(driver)
+    remove_recommended_jobs(driver)
     tabs_category = driver.find_element_by_class_name("scrollableTabs")
     tabs_category = tabs_category.find_elements_by_class_name("tab")
     for tab in tabs_category:
@@ -124,6 +142,7 @@ def scrap_data_companies(driver):
         if i == 0:
             click = False  # We don't need to click on the first link since we are already seeing it
         remove_sign_up_prompt(driver)
+        remove_recommended_jobs(driver)
         html_job_container = elt.get_attribute('innerHTML')
         time.sleep(2)
         name_company = get_name_company(elt.text)
