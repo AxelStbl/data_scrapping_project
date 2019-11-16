@@ -16,9 +16,10 @@ import re
 import os
 import platform
 from selenium.webdriver.firefox.options import Options
+import logging
 
 # We are using firefox headless with this option
-HEADLESS = False
+HEADLESS = True
 QUIT = True
 SAVED_DATA = "saved_data"
 
@@ -57,11 +58,15 @@ def remove_recommended_jobs(driver):
         pass
 
 
-def scrape_data_company(driver, elt, click=True):
+def scrape_data_company(driver, elt, should_click=True):
     """Will click on the company name and each category so we can then store data"""
     # TODO move this when calling the function
-    if click:
-        elt.click()
+    if should_click:
+        try:
+            elt.click()
+            logging.debug("Clicking on elt {}".format(elt.text))
+        except ElementClickInterceptedException as err:
+            logging.error("ElementClickInterceptedException: {}".format(err))
 
     time.sleep(2)
     remove_sign_up_prompt(driver)
@@ -69,7 +74,10 @@ def scrape_data_company(driver, elt, click=True):
     tabs_category = driver.find_element_by_class_name("scrollableTabs")
     tabs_category = tabs_category.find_elements_by_class_name("tab")
     for tab in tabs_category:
-        tab.click()
+        try:
+            tab.click()
+        except ElementClickInterceptedException as err:
+            logging.error("ElementClickInterceptedException: {}".format(err))
         name_category = tab.text
         print(name_category)
         time.sleep(.1)
@@ -138,9 +146,9 @@ def get_name_company(html_job_container):
 def scrap_data_companies(driver):
     list_element = driver.find_elements_by_class_name("jobContainer")
     for i, elt in enumerate(list_element):
-        click = True
+        should_click = True
         if i == 0:
-            click = False  # We don't need to click on the first link since we are already seeing it
+            should_click = False  # We don't need to should_click on the first link since we are already seeing it
         remove_sign_up_prompt(driver)
         remove_recommended_jobs(driver)
         html_job_container = elt.get_attribute('innerHTML')
@@ -150,7 +158,7 @@ def scrap_data_companies(driver):
         company_and_id_job = name_company + "-" + job_id
         os.mkdir(company_and_id_job)
         os.chdir(company_and_id_job)
-        scrape_data_company(driver, elt, click)
+        scrape_data_company(driver, elt, should_click)
         os.chdir("..")
 
 
