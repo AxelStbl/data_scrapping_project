@@ -129,7 +129,7 @@ def init_job_page(base_url, driver):
 
 
 def remove_sign_up_prompt(driver):
-    """Method to remove sign up prompt from glassdoor so we won't have to login"""
+    """Method to remove sign up prompt so we won't have to login"""
     try:
         driver.find_element_by_class_name("selected").click()
     except ElementClickInterceptedException:
