@@ -173,3 +173,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 .idea
+
+# Our data from each
+saved_data/
