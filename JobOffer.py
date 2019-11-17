@@ -25,9 +25,16 @@ class JobOffer:
         return res
 
 
+def print_jobs(jobs):
+    print("All recent job offers are parsed showing the complete results: \n======================================\n")
+    for job in jobs:
+        print(job)
+        print("----------")
+
+
 def main():
     test = JobOffer(1, "paris", "Software Engineer",
-                    Company.Company("Channel", headquarter_loc="Paris", rating="Rating", benefits_rating=4.5), None,
+                    Company.Company("Channel", headquarters="Paris", rating="Rating", benefits_rating=4.5), None,
                     salary=5000)
     print(test)
 

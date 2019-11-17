@@ -7,16 +7,12 @@ def scrape_company_tab(data):
     """scrape data about companies"""
     soup = BeautifulSoup(data, 'html.parser')
     company_data = soup.find_all('div', class_="infoEntity")
-    if not company_data:
-        return None
     label_value_data = {}
     if len(company_data) > 0:
         for data in company_data:
             label_value_data[data.label.getText().lower()] = data.find('span', class_='value').get_text()
 
         span_website = soup.find('span', class_="website")
-        if not span_website:
-            return None
         if span_website:
             website_link = span_website.find('a', href=True)
             label_value_data["website"] = website_link['href']
@@ -38,7 +34,7 @@ def nbr_of_ratings(data):
     allnbr = str(soup.find(class_="ct-bar"))
     if not allnbr:
         return None
-    nbr_of_ratings = []
+    rating_counts = []
     values = soup.find_all('line', class_="ct-bar")
     if not values:
         return None
@@ -47,11 +43,12 @@ def nbr_of_ratings(data):
         if not match:
             return None
         nbr = int((match).group(1))
-        nbr_of_ratings.append(nbr)
+        rating_counts.append(nbr)
     sum = 0
-    for nbr in nbr_of_ratings:
-        sum += nbr
+    for rating in rating_counts:
+        sum += rating
     return sum
+
 
 def benefits_rate(data):
     """Returns the rating of the benefits of the company"""
@@ -62,7 +59,7 @@ def benefits_rate(data):
     return rate
 
 
-def nbr_of_benefitsrating(data):
+def nbr_of_benefits_rating(data):
     """Returns the number of ppl who rated for the benefits of the company
     """
     soup = BeautifulSoup(data, 'html.parser')
@@ -72,28 +69,32 @@ def nbr_of_benefitsrating(data):
     return nbr_of_ratings
 
 
-def main():
-    if not os.path.exists('Rating.html'):
+def test_scrapper():
+    """Use our scrapper on data for test"""
+    rating_path = 'test_data/Rating.html'
+    if not os.path.exists(rating_path):
         return
-    if not os.path.exists('Benefits.html'):
+    benefits_path = 'test_data/Benefits.html'
+    if not os.path.exists(benefits_path):
         return
-    if not os.path.exists('Company.html'):
+    company_path = 'test_data/Company.html'
+    if not os.path.exists(company_path):
         return
-    fd_rating = open('Rating.html', 'r')
+    fd_rating = open(rating_path, 'r')
     data_rating = fd_rating.read()
     fd_rating.close()
-    fd_benefits = open('Benefits.html', 'r')
+    fd_benefits = open(benefits_path, 'r')
     data_benefits = fd_benefits.read()
     fd_benefits.close()
     print(rating(data_rating))
     print(nbr_of_ratings(data_rating))
     print(benefits_rate(data_benefits))
-    print(nbr_of_benefitsrating(data_benefits))
-    fd_comp = open('Company.html', 'r')
+    print(nbr_of_benefits_rating(data_benefits))
+    fd_comp = open(company_path, 'r')
     data_cmp = fd_comp.read()
     fd_comp.close()
     print(scrape_company_tab(data_cmp))
 
 
 if __name__ == '__main__':
-    main()
+    test_scrapper()

@@ -1,25 +1,35 @@
-ATTRIBUTES_TO_STRING = dict(name="Name", headquarters_loc="Headquarters localisation", rating="Rating",
+ATTRIBUTES_TO_STRING = dict(name="Name", headquarters="Headquarters localisation", rating="Rating",
                             rating_count="Total ratings",
                             benefits_rating="Benefits Rating",
                             benefits_rating_count="Benefits Rating Total Count",
-                            size="Size", year_foundation="Year foundation",
-                            company_type="Company Type", website="Website")
+                            size="Size", founded="Year foundation",
+                            type="Company Type", website="Website", competitors="Competitors")
 
 
 class Company:
-    def __init__(self, name, headquarter_loc=None, rating=None, rating_count=None, benefits_rating=None,
-                 benefits_rating_count=None, size=None, year_foundation=None,
-                 company_type=None, website=None):
+    def __init__(self, name, headquarters=None, rating=None, rating_count=None, benefits_rating=None,
+                 benefits_rating_count=None, size=None, founded=None,
+                 type=None, website=None, competitors=None):
         self.name = name
-        self.headquarters_loc = headquarter_loc
+        self.headquarters = headquarters
         self.rating = rating
         self.rating_count = rating_count
         self.benefits_rating = benefits_rating
         self.benefits_rating_count = benefits_rating_count
         self.size = size
-        self.year_foundation = year_foundation
-        self.company_type = company_type
+        self.founded = founded
+        self.type = type
         self.website = website
+        self.competitors = competitors
+
+    def add_data_dict(self, data_dict):
+        """replace all values by their corresponding value"""
+        for key, value in data_dict.items():
+            if key in vars(self):
+                self[key] = value
+
+    def __setitem__(self, key, value):
+        self.__setattr__(key, value)
 
     def __repr__(self):
         res = "Company: \n"
@@ -30,8 +40,8 @@ class Company:
 
 
 def main():
-    c1 = Company("Facebook", headquarter_loc="Palo alto", benefits_rating=3.4, benefits_rating_count=120,
-                 year_foundation=2004, company_type="Software", website="https://www.facebook.com", rating=4,
+    c1 = Company("Facebook", headquarters="Palo alto", benefits_rating=3.4, benefits_rating_count=120,
+                 founded=2004, type="Software", website="https://www.facebook.com", rating=4,
                  rating_count=124)
     print(c1)
 
