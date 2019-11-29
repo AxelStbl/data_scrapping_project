@@ -175,4 +175,4 @@ fabric.properties
 .idea
 
 # Our data from each
-saved_data/
+scrapping/saved_data/

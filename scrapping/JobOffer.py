@@ -1,4 +1,4 @@
-import Company
+from scrapping import Company
 
 ATTRIBUTES_TO_STRING = dict(job_id="ID", city="City", position="Job Title", company="Company",
                             description="Description", salary="Salary")

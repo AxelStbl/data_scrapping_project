@@ -1,8 +1,6 @@
 import datetime
 import logging
-import os
 import platform
-import re
 import time
 
 from selenium import webdriver
@@ -10,15 +8,8 @@ from selenium.common.exceptions import ElementClickInterceptedException, NoSuchE
     ElementNotInteractableException
 from selenium.webdriver.firefox.options import Options
 
-# We are using firefox headless with this option
-from Company import Company
-from JobOffer import JobOffer, print_jobs
-from TabScrapping import scrape_company_tab, rating, nbr_of_ratings, benefits_rate, nbr_of_benefits_rating
-
-HEADLESS = True
-QUIT = True
-SAVED_DATA = "saved_data"
-RECAP = True  # Display all the job offers again at the end of the program
+import docs.conf as conf
+from scrapping import *
 
 
 def scrape_data_company(driver, elt, job, should_click=True):
@@ -75,9 +66,9 @@ def save_data_to_file(html_detail_tab, name_category):
 
 def create_output_folder():
     """create output folder with saved data"""
-    if not os.path.lexists(SAVED_DATA):
-        os.mkdir(SAVED_DATA)
-    os.chdir(SAVED_DATA)
+    if not os.path.lexists(conf.SAVED_DATA):
+        os.mkdir(conf.SAVED_DATA)
+    os.chdir(conf.SAVED_DATA)
     data_dir_by_date = datetime.datetime.now().strftime("data-%d-%b_%H:%M:%S")
     os.mkdir(data_dir_by_date)
     os.chdir(data_dir_by_date)
@@ -165,14 +156,14 @@ def get_geckodriver():
     running_system = platform.system()
     driver = None
     options = Options()
-    options.headless = HEADLESS
+    options.headless = conf.HEADLESS
     executable_path = ""
     if running_system == "Linux":
-        executable_path = r'./geckodriver-linux/geckodriver'
+        executable_path = r'../drivers/geckodriver-linux/geckodriver'
     elif running_system == "Darwin":
-        executable_path = r'./geckodriver-macos/geckodriver'
+        executable_path = r'../drivers/geckodriver-macos/geckodriver'
     elif running_system == "Windows":
-        executable_path = r'./geckodriver-win/geckodriver'
+        executable_path = r'../drivers/geckodriver-win/geckodriver'
     else:
         print("You don't have a compatible operating system for running this scrapper")
     if executable_path != "":
@@ -182,9 +173,6 @@ def get_geckodriver():
 
 def main():
     """Main function launch our functions"""
-    # website urls
-    base_url = "https://www.glassdoor.com/Job/tel-aviv-software-engineer-jobs-SRCH_IL.0,8_IC2421090_KO9,26.htm"
-
     # Firefox session
 
     # Chooses the right executable
@@ -194,10 +182,10 @@ def main():
         return
 
     create_output_folder()
-    init_job_page(base_url, driver)
+    init_job_page(conf.BASE_URL, driver)
     scrap_data_companies(driver)
 
-    if QUIT:  # not quitting for debugging purposes
+    if conf.QUIT:  # not quitting for debugging purposes
         driver.quit()
 
 
