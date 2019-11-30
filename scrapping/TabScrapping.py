@@ -76,3 +76,21 @@ class TabScrapping:
         if not nbr_of_ratings:
             return None
         return nbr_of_ratings
+
+    def parse_tab(self, job, name_category):
+        """Select the appropriate method from TabScrapping based on the name of
+        the tab
+        :param job: job instance
+        :param name_category: name of the tab
+        """
+        if name_category == 'Company':
+            company_data_dict = self.scrape_company_tab()
+            job.company.add_data_dict(company_data_dict)
+        elif name_category == 'Rating':
+            job.company['rating'] = self.rating()
+            job.company['rating_count'] = self.nbr_of_ratings()
+        elif name_category == 'Benefits':
+            job.company['benefits_rating'] = self.benefits_rate()
+            job.company[
+                'benefits_rating_count'] = self.nbr_of_benefits_rating(
+            )

@@ -16,12 +16,14 @@ logger = conf.configure_logger()
 
 
 class Scrapper:
-    def __init__(self, driver):
+    def __init__(self, driver, path_to_save):
         """
         Initiate the scrapper
         :param driver: the selenium driver
         """
         self.driver = driver
+        self.date_path = path_to_save
+        self.current_path = path_to_save
 
     def scrape_data_company(self, elt, job):
         """Will click on the company name and each category so we
@@ -84,8 +86,9 @@ class Scrapper:
                 "jobDetailsInfoWrap")
             html_detail_tab = detail_tab.get_attribute('innerHTML')
             name_category = tab.text
-            parse_tab(html_detail_tab, job, name_category)
-            save_data_to_file(html_detail_tab, name_category)
+            tab_scrapper = TabScrapping(html_detail_tab)
+            tab_scrapper.parse_tab(job, name_category)
+            self.save_data_to_file(html_detail_tab, name_category)
 
     def scrap_data_companies(self):
         """Will scrape and then print each data collected
@@ -106,9 +109,9 @@ class Scrapper:
                 company = Company(name_company)
                 job = JobOffer(job_id, company=company)
                 company_and_id_job = name_company + "-" + job_id
-                conf.current_path = os.path.join(conf.date_path,
+                self.current_path = os.path.join(self.date_path,
                                                  company_and_id_job)
-                os.mkdir(conf.current_path)
+                os.mkdir(self.current_path)
 
                 if i != 0:
                     click_on_job_offer(
@@ -173,66 +176,42 @@ class Scrapper:
                     "not the recommended modal ",
                     err)
 
+    def create_output_folder(self):
+        """create output folder with html saved data
+        :return: the relative path of the created folder by date
+        """
+        if not os.path.exists(self.current_path):
+            os.mkdir(self.current_path)
+        data_dir_by_date = datetime.datetime.now().strftime(
+            "data-%d-%b_%H:%M:%S")
+        self.date_path = os.path.join(self.current_path, data_dir_by_date)
+        if not os.path.exists(self.date_path):
+            os.mkdir(self.date_path)
 
-def create_output_folder():
-    """create output folder with html saved data
-    :return: the relative path of the created folder by date
-    """
-    if not os.path.exists(conf.SAVED_DATA):
-        os.mkdir(conf.SAVED_DATA)
-    data_dir_by_date = datetime.datetime.now().strftime(
-        "data-%d-%b_%H:%M:%S")
-    full_path_saved_data = os.path.join(conf.SAVED_DATA, data_dir_by_date)
-    if not os.path.exists(full_path_saved_data):
-        os.mkdir(full_path_saved_data)
-    return full_path_saved_data
+    def save_data_to_file(self, html_detail_tab, name_category):
+        """saves us a copy of the html that was parsed
+        :param html_detail_tab: html detail tab that was provided
+        :param name_category: name category to save
+        """
+        name_saved_data = name_category + ".html"
+        with open(os.path.join(self.current_path, name_saved_data), 'a+') as f:
+            try:
+                f.write(html_detail_tab)
+            except IOError as io:
+                logger.error(
+                    "caught an io exception while writing to the file",
+                    io)
 
 
 def get_name_company(html_job_container):
     """find the job name from html
     :param html_job_container:
-    :return:
+    :return:the name of the company
     """
     lines = html_job_container.splitlines()
     if len(lines) > 0:
         return lines[0]
     return None
-
-
-def save_data_to_file(html_detail_tab, name_category):
-    """saves us a copy of the html that was parsed
-    :param html_detail_tab: html detail tab that was provided
-    :param name_category: name category to save
-    """
-    name_saved_data = name_category + ".html"
-    with open(os.path.join(conf.current_path, name_saved_data), 'a+') as f:
-        try:
-            f.write(html_detail_tab)
-        except IOError as io:
-            logger.error(
-                "caught an io exception while writing to the file",
-                io)
-
-
-def parse_tab(html_detail_tab, job, name_category):
-    """Select the appropriate method from TabScrapping based on the name of
-    the tab
-    :param html_detail_tab: html content of tab
-    :param job: job instance
-    :param name_category: name of the tab
-    """
-    scrapper = TabScrapping(html_detail_tab)
-    if name_category == 'Company':
-        company_data_dict = scrapper.scrape_company_tab()
-        job.company.add_data_dict(company_data_dict)
-    elif name_category == 'Rating':
-        job.company['rating'] = scrapper.rating()
-        job.company['rating_count'] = scrapper.nbr_of_ratings()
-    elif name_category == 'Benefits':
-        job.company['benefits_rating'] = scrapper.benefits_rate()
-        job.company[
-            'benefits_rating_count'] = scrapper.nbr_of_benefits_rating(
-        )
 
 
 def click_on_job_offer(elt):
