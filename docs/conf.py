@@ -1,6 +1,11 @@
 # All config here that can be tuned
 # importing module
 import logging
+import os
+import platform
+
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 # We are using firefox headless with this option
 HEADLESS = False
@@ -16,6 +21,7 @@ BASE_URL = "https://www.glassdoor.com/Job/tel-aviv-software-engineer-jobs" \
 date_path = ""
 current_path = ""
 
+
 # Create and configure logger
 def configure_logger():
     logging.basicConfig(filename="log_scrapping.log",
@@ -28,3 +34,31 @@ def configure_logger():
     # Setting the threshold of logger to DEBUG
     logger.setLevel(logging.DEBUG)
     return logger
+
+
+def get_geckodriver():
+    """We have included the geckodriver for firefox for windows mac and
+    linux
+    :return: appropriate driver based on the os launching the app """
+    running_system = platform.system()
+    driver = None
+    options = Options()
+    options.headless = HEADLESS
+    executable_path = os.path.join("..", "drivers")
+    if running_system == "Linux":
+        executable_path = os.path.join(executable_path,
+                                       "geckodriver-linux", "geckodriver")
+    elif running_system == "Darwin":
+        executable_path = os.path.join(executable_path,
+                                       "geckodriver-macos", "geckodriver")
+    elif running_system == "Windows":
+        executable_path = os.path.join(executable_path,
+                                       "geckodriver-win", "geckodriver")
+    else:
+        print(
+            "You don't have a compatible operating system for running this "
+            "scrapper")
+    if executable_path != "":
+        driver = webdriver.Firefox(options=options,
+                                   executable_path=executable_path)
+    return driver

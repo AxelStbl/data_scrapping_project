@@ -1,4 +1,4 @@
-from scrapping import Company
+from scrapping import *
 
 ATTRIBUTES_TO_STRING = dict(job_id="ID", city="City", position="Job Title",
                             company="Company",
@@ -54,7 +54,8 @@ def print_jobs(jobs):
 
 def main():
     test = JobOffer(1, "paris", "Software Engineer",
-                    Company("Channel", headquarters="Paris", rating="Rating",
+                    Company("Channel", headquarters="Paris",
+                            rating="Rating",
                             benefits_rating=4.5), None,
                     salary=5000)
     print(test)
