@@ -7,7 +7,7 @@ from selenium.common.exceptions import StaleElementReferenceException, \
     NoSuchElementException, ElementClickInterceptedException, \
     ElementNotInteractableException
 
-from docs import conf
+from conf import conf
 from scrapping import TabScrapping
 from scrapping.Company import Company
 from scrapping.JobOffer import print_jobs, JobOffer
@@ -25,11 +25,11 @@ class Scrapper:
         self.date_path = path_to_save
         self.current_path = path_to_save
 
-    def scrape_data_company(self, elt, job):
+    def scrape_data_company(self, elt, company):
         """Will click on the company name and each category so we
         can then store data
         :param elt: company job offer link
-        :param job: """
+        :param company: """
 
         try:
             self.wait_job_loading(elt)
@@ -38,7 +38,8 @@ class Scrapper:
             tabs_category = self.driver.find_element_by_class_name(
                 "scrollableTabs")
             tabs_category = tabs_category.find_elements_by_class_name("tab")
-            self.get_data_from_tabs(job, tabs_category)
+            self.get_data_from_tabs(company, tabs_category)
+
         except TimeoutError:
             logger.error("Timeout was reached and data was not loaded")
         except StaleElementReferenceException as err:
@@ -69,10 +70,10 @@ class Scrapper:
                     "job offer of {} was not loaded in 10 seconds".format(
                         company_name))
 
-    def get_data_from_tabs(self, job, tabs_category):
+    def get_data_from_tabs(self, company, tabs_category):
         """click on each tab to get the data and completes job with
         the received information
-        :param job: job instance
+        :param company: company instance
         :param tabs_category: different tabs that we could click on
         """
         for tab in tabs_category:
@@ -87,7 +88,7 @@ class Scrapper:
             html_detail_tab = detail_tab.get_attribute('innerHTML')
             name_category = tab.text
             tab_scrapper = TabScrapping(html_detail_tab)
-            tab_scrapper.parse_tab(job, name_category)
+            tab_scrapper.parse_tab(company, name_category)
             self.save_data_to_file(html_detail_tab, name_category)
 
     def scrap_data_companies(self):
@@ -121,7 +122,7 @@ class Scrapper:
                     click_on_job_offer(
                         elt)  # link since we are already seeing it
 
-                self.scrape_data_company(elt, job)
+                self.scrape_data_company(elt, company)
                 jobs.append(job)
                 print(job)
             else:
