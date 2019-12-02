@@ -7,7 +7,7 @@ from selenium.common.exceptions import StaleElementReferenceException, \
     NoSuchElementException, ElementClickInterceptedException, \
     ElementNotInteractableException
 
-from docs import conf
+from conf import conf
 from scrapping import TabScrapping
 from scrapping.Company import Company
 from scrapping.JobOffer import print_jobs, JobOffer
