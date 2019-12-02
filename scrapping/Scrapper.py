@@ -96,6 +96,10 @@ class Scrapper:
         list_job_offers = self.driver.find_elements_by_class_name(
             "jobContainer")
         jobs = []
+        if len(list_job_offers) == 0:
+            print("There is nothing  to scrap for the job requested")
+            return
+
         for i, elt in enumerate(list_job_offers):
 
             self.remove_sign_up_prompt()
