@@ -53,12 +53,13 @@ def arg_parser():
     conf.QUIT = args.quit
     conf.RECAP = args.recap
     conf.JOB = urllib.parse.quote(args.job)
-    conf.BASE_URL = conf.urljob()
+    conf.BASE_URL = conf.url_job()
     conf.SAVED_DATA = args.saved_data
     print("Launching with the following parameters enter -h for more infos"
           " about them: HEADLESS {} , JOB: {}, QUIT: {} , RECAP: {},"
           " NAME DATA FOLDER: {} ".format(
-        conf.HEADLESS, conf.JOB, conf.QUIT, conf.RECAP, conf.SAVED_DATA))
+        conf.HEADLESS, urllib.parse.unquote(conf.JOB), conf.QUIT, conf.RECAP,
+        conf.SAVED_DATA))
 
     if __name__ == '__main__':
         main()

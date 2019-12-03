@@ -1,9 +1,7 @@
-#Run this in local if you want to execute it
-#GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
-#CREATE USER 'username'@'localhost' IDENTIFIED BY PASSWORD 'password';
-#GRANT ALL ON *.* TO 'username'@'localhost';
 CREATE DATABASE IF NOT EXISTS scrapping;
+ALTER DATABASE scrapping CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE scrapping;
+SET collation_connection = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS companies (
   id int PRIMARY KEY AUTO_INCREMENT,
@@ -19,6 +17,7 @@ CREATE TABLE IF NOT EXISTS companies (
   website varchar(255),
   competitors varchar(255)
 );
+ALTER TABLE companies CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS job_offers (
   id int PRIMARY KEY AUTO_INCREMENT,
@@ -30,3 +29,4 @@ CREATE TABLE IF NOT EXISTS job_offers (
   salary int,
   FOREIGN KEY (company_id) REFERENCES companies (id)
 );
+ALTER TABLE job_offers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;

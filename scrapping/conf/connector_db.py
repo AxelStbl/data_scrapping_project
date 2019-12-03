@@ -6,6 +6,7 @@ def get_db_conn():
         host="localhost",
         user="username",
         passwd="password",
-        database="scrapping"
+        database="scrapping",
+        auth_plugin='mysql_native_password'
     )
     return mydb
