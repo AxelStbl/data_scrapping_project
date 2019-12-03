@@ -1,6 +1,6 @@
 import os
 
-from scrapping import *
+import scrapping.scrappers.TabScrapping as TabScrapping
 
 
 def test_scrapper():
@@ -20,14 +20,19 @@ def test_scrapper():
     fd_benefits = open(benefits_path, 'r')
     data_benefits = fd_benefits.read()
     fd_benefits.close()
-    print(rating(data_rating))
-    print(nbr_of_ratings(data_rating))
-    print(benefits_rate(data_benefits))
-    print(nbr_of_benefits_rating(data_benefits))
+    tab = TabScrapping.TabScrapping(data_rating)
+    print(tab.rating())
+    tab = TabScrapping.TabScrapping(data_benefits)
+    print(tab.nbr_of_ratings())
+    tab = TabScrapping.TabScrapping(data_benefits)
+    print(tab.benefits_rate())
+    tab = TabScrapping.TabScrapping(data_benefits)
+    print(tab.nbr_of_benefits_rating())
     fd_comp = open(company_path, 'r')
     data_cmp = fd_comp.read()
     fd_comp.close()
-    print(scrape_company_tab(data_cmp))
+    tab = TabScrapping.TabScrapping(data_cmp)
+    print(tab.scrape_company_tab())
 
 
 if __name__ == '__main__':
