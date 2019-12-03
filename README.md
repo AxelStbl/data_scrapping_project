@@ -1,29 +1,21 @@
-<!-- TABLE OF CONTENTS -->
-## Table of Contents
-
-* [About the Project](#about-the-project)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Contributing](#contributing)
-* [Contact](#contact)
-
-
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<!--[![Product Name Screen Shot][product-screenshot]](https://example.com)-->
-
 The project :
-**To get informations about companies: salary , advantages, rating, adress, headquarters ... In purpose to have a complete 
+**To get informations about companies: salary , advantages, rating, adress, headquarters ... 
+In purpose to have a complete 
 documentation for person who need to know some things about a company.**
 
+The database ERD:
+
+
+![Database Scheme](database_scheme.png)
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
+
+Project Link: https://github.com/AxelStbl/data_scrapping_project  
 
 ### Prerequisites
 
@@ -42,41 +34,21 @@ documentation for person who need to know some things about a company.**
 * []()Selenium
 * []()BeautifulSoup
 * []()Firefox installed
+* []()MySql
 * []()mysql-connector-python
-* []()Run this in local if you want to execute the databases : 
-this : ''GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';'
-ot if it is not working this 2 others:
-'CREATE USER 'username'@'localhost' IDENTIFIED BY PASSWORD 'password';'
-'GRANT ALL ON *.* TO 'username'@'localhost';'
- and to run this : mysql -u username -p < scrapping/conf/database_creation.sql 
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-
-<!-- CONTACT -->
-## Contact
-
-Sarah TEMMAM - stemmam94@gmail.com
-Axel STRUBEL - axel.strubel@gmail.com
-
-Project Link: https://github.com/AxelStbl/data_scrapping_project
+* []()Run this in local if you want to execute the databases :   
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+```
+If you have a more recent version of SQL:  
+```sql
+CREATE USER 'username'@'localhost' IDENTIFIED BY PASSWORD 'password';
+GRANT ALL ON *.* TO 'username'@'localhost';
+```
+ and then to insert data :  
+ ```bash
+ mysql -u username -p < scrapping/conf/database_creation.sql 
+```
 
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
