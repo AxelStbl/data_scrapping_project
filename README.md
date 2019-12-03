@@ -40,12 +40,19 @@ Project Link: https://github.com/AxelStbl/data_scrapping_project
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
 ```
-If you have a more recent version of SQL:  
+If you an error :  
 ```sql
 CREATE USER 'username'@'localhost' IDENTIFIED BY PASSWORD 'password';
 GRANT ALL ON *.* TO 'username'@'localhost';
 ```
- and then to insert data :  
+
+Or also :  
+```sql
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL ON *.* TO 'username'@'localhost';
+```
+
+and then to insert data :  
  ```bash
  mysql -u username -p < scrapping/conf/database_creation.sql 
 ```
