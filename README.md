@@ -36,7 +36,7 @@ Project Link: https://github.com/AxelStbl/data_scrapping_project
 * []()Firefox installed
 * []()MySql
 * []()mysql-connector-python
-* []()Run this in local if you want to execute the databases :   
+* []()Run this in local if you want to execute the databases with the provided data configuration :   
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
 ```
@@ -49,6 +49,10 @@ GRANT ALL ON *.* TO 'username'@'localhost';
  ```bash
  mysql -u username -p < scrapping/conf/database_creation.sql 
 ```
+
+Another solution is to configure your mysql account
+in connector_db.py and set the password and username it has to have
+select and insert rights at least
 
 
 
