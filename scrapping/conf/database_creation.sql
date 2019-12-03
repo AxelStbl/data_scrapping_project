@@ -1,7 +1,3 @@
-#Run this in local if you want to execute it
-#GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
-#CREATE USER 'username'@'localhost' IDENTIFIED BY PASSWORD 'password';
-#GRANT ALL ON *.* TO 'username'@'localhost';
 CREATE DATABASE IF NOT EXISTS scrapping;
 USE scrapping;
 
