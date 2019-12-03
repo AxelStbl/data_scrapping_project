@@ -2,6 +2,10 @@ import mysql.connector
 
 
 def get_db_conn():
+    """
+    configure DB connection
+    :return:  db connector
+    """
     mydb = mysql.connector.connect(
         host="localhost",
         user="username",

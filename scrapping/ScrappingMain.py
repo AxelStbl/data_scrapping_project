@@ -27,6 +27,9 @@ def main():
 
 
 def arg_parser():
+    """
+    parse arguments from the command line for our project
+    """
     parser = argparse.ArgumentParser(
         description='To give parameters of configurations for the project')
 

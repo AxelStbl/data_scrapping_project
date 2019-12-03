@@ -60,6 +60,10 @@ class Company:
         self.__setattr__(key, value)
 
     def insert_to_db(self):
+        """
+        Insert data from company object to the database
+        :return: id of the company created or fetched
+        """
         db = conn.get_db_conn()
         cur = db.cursor()
         id_company = self.find_id_company(cur)
@@ -78,6 +82,11 @@ class Company:
         return self.find_id_company(cur)
 
     def find_id_company(self, cur):
+        """
+        execute request to find the id of the company
+        :param cur: name of the company
+        :return: id of the company
+        """
         cur.execute("SELECT id FROM companies where name = %s", (self.name,))
         exist = cur.fetchall()
         if len(exist) == 1:

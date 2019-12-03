@@ -26,6 +26,10 @@ class JobOffer:
         self.salary = salary
 
     def insert_to_db(self, company_id):
+        """
+        insert to db the job offer with the link to the company
+        :param company_id: the id in db of the company
+        """
         db = conn.get_db_conn()
         cur = db.cursor()
         # We are continuously improving our scrapping so on
