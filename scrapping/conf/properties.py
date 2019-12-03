@@ -46,7 +46,11 @@ def get_geckodriver():
     driver = None
     options = Options()
     options.headless = HEADLESS
-    executable_path = "drivers"
+    if os.getcwd().endswith("scrapping"):
+        executable_path = "drivers"
+    else:
+        executable_path = os.path.join("scrapping", "drivers")
+
     if running_system == "Linux":
         executable_path = os.path.join(executable_path,
                                        "geckodriver-linux", "geckodriver")
