@@ -8,7 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 # We are using firefox headless with this option
-HEADLESS = False
+HEADLESS = True
 QUIT = True
 SAVED_DATA = "saved_data"
 RECAP = True  # Display all the job offers again at the end of the program
@@ -44,7 +44,7 @@ def get_geckodriver():
     driver = None
     options = Options()
     options.headless = HEADLESS
-    executable_path = os.path.join("..", "drivers")
+    executable_path = "drivers"
     if running_system == "Linux":
         executable_path = os.path.join(executable_path,
                                        "geckodriver-linux", "geckodriver")

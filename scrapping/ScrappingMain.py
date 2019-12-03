@@ -1,4 +1,5 @@
-from scrapping.Scrapper import *
+import scrapping.scrappers.Scrapper as sc
+import scrapping.conf.properties as conf
 
 logger = conf.configure_logger()
 
@@ -12,7 +13,7 @@ def main():
     if not driver:
         print("Driver not found for your operating system")
         return
-    scrapper = Scrapper(driver, conf.SAVED_DATA)
+    scrapper = sc.Scrapper(driver, conf.SAVED_DATA)
     conf.date_path = scrapper.create_output_folder()
     scrapper.init_job_page(conf.BASE_URL)
     scrapper.scrap_data_companies()

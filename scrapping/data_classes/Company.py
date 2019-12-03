@@ -1,3 +1,5 @@
+import scrapping.conf.connector_db as conn
+
 ATTRIBUTES_TO_STRING = dict(name="Name",
                             headquarters="Headquarters localisation",
                             rating="Rating",
@@ -56,6 +58,31 @@ class Company:
         :param value: value to put
         """
         self.__setattr__(key, value)
+
+    def insert_to_db(self):
+        db = conn.get_db_conn()
+        cur = db.cursor()
+        id_company = self.find_id_company(cur)
+        if id_company:
+            return id_company
+        cur.execute(
+            "INSERT INTO companies (name, headquarters, rating, rating_count,"
+            "benefits_rating, benefits_rating_count, nb_of_employees,"
+            " founded, type, website, competitors) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (self.name, self.headquarters, self.rating, self.rating_count,
+             self.benefits_rating, self.benefits_rating_count, self.size,
+             self.founded, self.type,
+             self.website, self.competitors))
+        db.commit()
+        return self.find_id_company(cur)
+
+    def find_id_company(self, cur):
+        cur.execute("SELECT id FROM companies where name = %s", (self.name,))
+        exist = cur.fetchall()
+        if len(exist) == 1:
+            return exist[0][0]
+        return None
 
     def __repr__(self):
         """
