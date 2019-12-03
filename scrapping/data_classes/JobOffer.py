@@ -28,7 +28,6 @@ class JobOffer:
     def insert_to_db(self, company_id):
         db = conn.get_db_conn()
         cur = db.cursor()
-        print('job_id is ', self.job_id)
         # We are continuously improving our scrapping so on
         # duplicate key we can update the data we have
         cur.execute(
