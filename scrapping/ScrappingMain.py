@@ -2,8 +2,28 @@ import argparse
 
 import scrapping.conf.properties as conf
 import scrapping.scrappers.Scrapper as sc
+import urllib.parse
 
 logger = conf.configure_logger()
+
+
+def main():
+    """Main function launch our functions"""
+    arg_parser()
+
+    # Firefox session
+    # Chooses the right executable
+    driver = conf.get_geckodriver()
+    if not driver:
+        print("Driver not found for your operating system")
+        return
+    scrapper = sc.Scrapper(driver, conf.SAVED_DATA)
+    conf.date_path = scrapper.create_output_folder()
+    scrapper.init_job_page(conf.BASE_URL)
+    scrapper.scrap_data_companies()
+
+    if conf.QUIT:  # not quitting for debugging purposes
+        driver.quit()
 
 
 def arg_parser():
@@ -32,31 +52,13 @@ def arg_parser():
     conf.HEADLESS = args.headless
     conf.QUIT = args.quit
     conf.RECAP = args.recap
-    conf.JOB = args.job
+    conf.JOB = urllib.parse.quote(args.job)
     conf.BASE_URL = conf.urljob()
     conf.SAVED_DATA = args.saved_data
-    print(conf.HEADLESS, conf.QUIT, conf.RECAP, conf.JOB, conf.BASE_URL,
-          conf.SAVED_DATA)
+    print("Launching with the following parameters enter -h for more infos"
+          " about them: HEADLESS {} , JOB: {}, QUIT: {} , RECAP: {},"
+          " NAME DATA FOLDER: {} ".format(
+        conf.HEADLESS, conf.JOB, conf.QUIT, conf.RECAP, conf.SAVED_DATA))
 
-
-def main():
-    """Main function launch our functions"""
-    arg_parser()
-
-    # Firefox session
-    # Chooses the right executable
-    driver = conf.get_geckodriver()
-    if not driver:
-        print("Driver not found for your operating system")
-        return
-    scrapper = sc.Scrapper(driver, conf.SAVED_DATA)
-    conf.date_path = scrapper.create_output_folder()
-    scrapper.init_job_page(conf.BASE_URL)
-    scrapper.scrap_data_companies()
-
-    if conf.QUIT:  # not quitting for debugging purposes
-        driver.quit()
-
-
-if __name__ == '__main__':
-    main()
+    if __name__ == '__main__':
+        main()
