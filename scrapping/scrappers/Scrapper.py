@@ -190,7 +190,7 @@ class Scrapper:
         if not os.path.exists(self.current_path):
             os.mkdir(self.current_path)
         data_dir_by_date = datetime.datetime.now().strftime(
-            "data-%d-%b_%H:%M:%S")
+            "data-%d-%b_%H-%M-%S")
         self.date_path = os.path.join(self.current_path, data_dir_by_date)
         if not os.path.exists(self.date_path):
             os.mkdir(self.date_path)
