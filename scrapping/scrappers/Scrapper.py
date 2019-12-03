@@ -7,10 +7,10 @@ from selenium.common.exceptions import StaleElementReferenceException, \
     NoSuchElementException, ElementClickInterceptedException, \
     ElementNotInteractableException
 
-from conf import conf
-from scrapping import TabScrapping
-from scrapping.Company import Company
-from scrapping.JobOffer import print_jobs, JobOffer
+import scrapping.conf.properties as conf
+import scrapping.data_classes.Company as Company
+import scrapping.data_classes.JobOffer as JobOffer
+import scrapping.scrappers.TabScrapping as TabScrapping
 
 logger = conf.configure_logger()
 
@@ -87,7 +87,7 @@ class Scrapper:
                 "jobDetailsInfoWrap")
             html_detail_tab = detail_tab.get_attribute('innerHTML')
             name_category = tab.text
-            tab_scrapper = TabScrapping(html_detail_tab)
+            tab_scrapper = TabScrapping.TabScrapping(html_detail_tab)
             tab_scrapper.parse_tab(company, name_category)
             self.save_data_to_file(html_detail_tab, name_category)
 
@@ -111,8 +111,7 @@ class Scrapper:
             job_id = get_job_id(html_job_container)
 
             if job_id is not None and name_company is not None:
-                company = Company(name_company)
-                job = JobOffer(job_id, company=company)
+                company = Company.Company(name_company)
                 company_and_id_job = name_company + "-" + job_id
                 self.current_path = os.path.join(self.date_path,
                                                  company_and_id_job)
@@ -123,11 +122,14 @@ class Scrapper:
                         elt)  # link since we are already seeing it
 
                 self.scrape_data_company(elt, company)
+                company_id = company.insert_to_db()
+                job = JobOffer.JobOffer(job_id, company=company)
+                job.insert_to_db(company_id)
                 jobs.append(job)
                 print(job)
             else:
                 logger.error("Job Id not found")
-        print_jobs(jobs)
+        JobOffer.print_jobs(jobs)
 
     def init_job_page(self, base_url):
         """

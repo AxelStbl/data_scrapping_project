@@ -70,12 +70,15 @@ class TabScrapping:
     def nbr_of_benefits_rating(self):
         """Returns the nbr of benefits a company received
         :return:  the number of ppl who rated for the benefits of the company
+        or None if not found
         """
         soup = BeautifulSoup(self.data_to_scrape, 'html.parser')
         nbr_of_ratings = soup.find(class_="minor noMargTop padSm").get_text()
-        if not nbr_of_ratings:
-            return None
-        return nbr_of_ratings
+        if nbr_of_ratings:
+            matches = re.findall(r'\d', nbr_of_ratings)
+            if len(matches) == 1:
+                return matches[0]
+        return None
 
     def parse_tab(self, company, name_category):
         """Select the appropriate method from TabScrapping based on the name of
@@ -91,6 +94,4 @@ class TabScrapping:
             company['rating_count'] = self.nbr_of_ratings()
         elif name_category == 'Benefits':
             company['benefits_rating'] = self.benefits_rate()
-            company[
-                'benefits_rating_count'] = self.nbr_of_benefits_rating(
-            )
+            company['benefits_rating_count'] = self.nbr_of_benefits_rating()

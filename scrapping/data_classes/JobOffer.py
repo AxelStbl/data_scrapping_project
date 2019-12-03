@@ -1,4 +1,5 @@
-from scrapping import *
+import scrapping.conf.connector_db as conn
+import scrapping.data_classes.Company as Company
 
 ATTRIBUTES_TO_STRING = dict(job_id="ID", city="City", position="Job Title",
                             company="Company",
@@ -17,11 +18,29 @@ class JobOffer:
         :param salary: average salary
         """
         self.job_id = job_id
+        self.city = city
         self.company = company
         self.position = position
         self.company = company
         self.description = description
         self.salary = salary
+
+    def insert_to_db(self, company_id):
+        db = conn.get_db_conn()
+        cur = db.cursor()
+        print('job_id is ', self.job_id)
+        # We are continuously improving our scrapping so on
+        # duplicate key we can update the data we have
+        cur.execute(
+            "INSERT INTO job_offers "
+            "(job_id, city, position, company_id, description, salary) "
+            "VALUES (%s, %s, %s, %s, %s, %s)"
+            "ON DUPLICATE KEY UPDATE city=%s, position = %s,"
+            " description = %s, salary = %s",
+            (self.job_id, self.city, self.position, company_id,
+             self.description, self.salary, self.city, self.position,
+             self.description, self.salary))
+        db.commit()
 
     def __repr__(self):
         """
@@ -54,9 +73,9 @@ def print_jobs(jobs):
 
 def main():
     test = JobOffer(1, "paris", "Software Engineer",
-                    Company("Channel", headquarters="Paris",
-                            rating="Rating",
-                            benefits_rating=4.5), None,
+                    Company.Company("Channel", headquarters="Paris",
+                                    rating="Rating",
+                                    benefits_rating=4.5), None,
                     salary=5000)
     print(test)
 
