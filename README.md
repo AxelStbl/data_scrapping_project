@@ -42,8 +42,13 @@ documentation for person who need to know some things about a company.**
 * []()Selenium
 * []()BeautifulSoup
 * []()Firefox installed
-* []()go
-
+* []()mysql-connector-python
+* []()Run this in local if you want to execute the databases : 
+this : ''GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';'
+ot if it is not working this 2 others:
+'CREATE USER 'username'@'localhost' IDENTIFIED BY PASSWORD 'password';'
+'GRANT ALL ON *.* TO 'username'@'localhost';'
+ and to run this : mysql -u username -p < scrapping/conf/database_creation.sql 
 <!-- CONTRIBUTING -->
 ## Contributing
 
