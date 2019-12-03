@@ -176,3 +176,4 @@ fabric.properties
 
 # Our data from each
 scrapping/saved_data/
+/saved_data/
