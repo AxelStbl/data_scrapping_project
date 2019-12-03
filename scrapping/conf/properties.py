@@ -13,13 +13,14 @@ QUIT = True
 SAVED_DATA = "saved_data"
 RECAP = True  # Display all the job offers again at the end of the program
 WAITING_TIME = 1  # in seconds depending of your connexion
+JOB = 'ACTUARY'
+BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=true&clickSource=searchBtn&typedKeyword=ACTUARY&sc.keyword=ACTUARY&locT=C&locId=2421090"
+LOGGING_LEVEL = logging.ERROR
 
 # website urls
-BASE_URL = "https://www.glassdoor.com/Job/tel-aviv-software-engineer-jobs" \
-           "-SRCH_IL.0,8_IC2421090_KO9,26.htm "
-
-date_path = ""
-current_path = ""
+def urljob():
+    return "https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=true&clickSource=searchBtn&typedKeyword={}&sc.keyword={}&locT=C&locId=2421090".format(
+        JOB, JOB)
 
 
 # Create and configure logger
@@ -32,7 +33,7 @@ def configure_logger():
     logger = logging.getLogger()
 
     # Setting the threshold of logger to DEBUG
-    logger.setLevel(logging.ERROR)
+    logger.setLevel(LOGGING_LEVEL)
     return logger
 
 
