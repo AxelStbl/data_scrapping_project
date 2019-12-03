@@ -1,6 +1,8 @@
 import re
 from bs4 import BeautifulSoup
 
+import scrapping.conf.properties as conf
+
 
 class TabScrapping:
     def __init__(self, data_to_scrape):
@@ -66,6 +68,27 @@ class TabScrapping:
         if not rate:
             return None
         return rate
+
+    def salary(self):
+        """ WORK IN PROGRESS
+                To scrape the average salaries for each job title
+                :return: a mean of all the job title were appears the name of the job we search for.
+                """
+        soup = BeautifulSoup(self.data_to_scrape, 'html.parser')
+        data_salary = soup.find_all(class_="noMarg salaryRow row")
+        list_salary = []
+        sum = 0
+        for line in data_salary:
+            average_salary = line.get_text().split('$')[4]
+            job_title = line.get_text().split('$')[0]
+            if conf.JOB in job_title:
+                average_salary = int(average_salary.replace(',', ''))
+                list_salary.append(average_salary)
+                sum += average_salary
+        if len(list_salary) == 0:
+            return None
+        mean = sum / len(list_salary)
+        return int(mean)
 
     def nbr_of_benefits_rating(self):
         """Returns the nbr of benefits a company received
