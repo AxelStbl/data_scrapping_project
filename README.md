@@ -17,18 +17,6 @@ The database ERD:
 
 Project Link: https://github.com/AxelStbl/data_scrapping_project  
 
-### Prerequisites
-
-* []()To run the project => you need to run the 'python -m scrapping'.
-* []()Parameters: HEADLESS, QUIT, SAVED_DATA, RECAP, JOB, BASE_URL and LOGGING_LEVEL.
-* []()HEADLESS: To scrape data in headless mode on Firefox (by default it is False)
-* []()QUIT: To quit the program (By defaut it is True)
-* []()SAVED_DATA: To enter the name of the folder to save the data (by default 'saved_data')
-* []()RECAP: To display all the job offers again at the end of the program. (By defaut it is True)
-* []()JOB: To enter the job we want to scrap (By default 'ACTUARY')
-* []()BASE_URL : It creates the url with the job who has entered
-* []()LOGGING_LEVEL: By default logging.ERROR
-
 ### Installation
 * []()Anaconda environment with python 3.6
 * []()Selenium
@@ -60,6 +48,20 @@ and then to insert data :
 Another solution is to configure your mysql account
 in connector_db.py and set the password and username it has to have
 select and insert rights at least
+
+### How to run
+
+* []()To run the project => you need to run the 'python -m scrapping'.
+* []()Parameters: HEADLESS, QUIT, SAVED_DATA, RECAP, JOB, BASE_URL and LOGGING_LEVEL.
+* []()HEADLESS: To scrape data in headless mode on Firefox (by default it is False)
+* []()QUIT: To quit the program (By defaut it is True)
+* []()SAVED_DATA: To enter the name of the folder to save the data (by default 'saved_data')
+* []()RECAP: To display all the job offers again at the end of the program. (By defaut it is True)
+* []()JOB: To enter the job we want to scrap (By default 'ACTUARY')
+* []()BASE_URL : It creates the url with the job who has entered
+* []()LOGGING_LEVEL: By default logging.ERROR
+
+
 
 
 
