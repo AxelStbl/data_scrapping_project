@@ -2,11 +2,10 @@ import scrapping.conf.connector_db as conn
 import json
 import requests
 
-
 ATTRIBUTES_TO_STRING = dict(name="Name",
-                            headquarters_city="Headquarters localisation (city)",
-                            headquarters_country="Headquarters localisation (country)",
-                            headquarters_currency="Headquarters currency (currency)",
+                            headquarters_city="Headquarters City",
+                            headquarters_country="Headquarters Country",
+                            headquarters_currency="Headquarters Currency",
                             rating="Rating",
                             rating_count="Total ratings",
                             benefits_rating="Benefits Rating",
@@ -17,7 +16,8 @@ ATTRIBUTES_TO_STRING = dict(name="Name",
 
 
 class Company:
-    def __init__(self, name, headquarters_city=None, headquarters_country=None, headquarters_currency=None, rating=None, rating_count=None,
+    def __init__(self, name, headquarters_city=None, headquarters_country=None,
+                 headquarters_currency=None, rating=None, rating_count=None,
                  benefits_rating=None,
                  benefits_rating_count=None, nb_of_employees=None,
                  founded=None,
@@ -63,7 +63,8 @@ class Company:
             elif key == 'headquarters':
                 self.headquarters_city = value.split(',')[0].strip()
                 self.headquarters_country = value.split(',')[1].strip()
-                self.headquarters_currency = get_currency(self.headquarters_country)
+                self.headquarters_currency = get_currency(
+                    self.headquarters_country)
 
     def __setitem__(self, key, value):
         """
@@ -85,12 +86,14 @@ class Company:
             self.update_data_company(company, cur, db)
             return id_company
         cur.execute(
-            "INSERT INTO companies (name, headquarters_city, headquarters_country, headquarters_currency, "
+            "INSERT INTO companies (name, headquarters_city, "
+            "headquarters_country, headquarters_currency, "
             "rating, rating_count,"
             "benefits_rating, benefits_rating_count, nb_of_employees,"
             " founded, type, website, competitors) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (self.name, self.headquarters_city,self.headquarters_country ,self.headquarters_currency, self.rating, self.rating_count,
+            (self.name, self.headquarters_city, self.headquarters_country,
+             self.headquarters_currency, self.rating, self.rating_count,
              self.benefits_rating, self.benefits_rating_count,
              self.nb_of_employees,
              self.founded, self.type,
@@ -142,7 +145,8 @@ class Company:
 
 
 def main():
-    c1 = Company("Facebook", headquarters_city="Palo alto", benefits_rating=3.4,
+    c1 = Company("Facebook", headquarters_city="Palo alto",
+                 benefits_rating=3.4,
                  benefits_rating_count=120,
                  founded=2004, type="Software",
                  website="https://www.facebook.com", rating=4,
@@ -150,18 +154,20 @@ def main():
     print(c1)
 
 
-
 def get_currency(country):
-    """Take the currency data of the country of the company on the API of the website restcountries.eu
+    """Take the currency data of the country of the company on the
+     API of the website restcountries.eu
     :param country: country to get currency
     :return: the name of the currency
     """
-    #TODO handle exceptions and not working
-    URL = 'https://restcountries.eu/rest/v2/name/{}?fullText=true'.format(country)
+    # TODO handle exceptions and not working
+    URL = 'https://restcountries.eu/rest/v2/name/{}?fullText=true'.format(
+        country)
     r = requests.get(URL).content
     data = json.loads(r)[0]
     name_cur = data['currencies'][0]['name']
     return name_cur
+
 
 if __name__ == '__main__':
     main()
