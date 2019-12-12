@@ -1,7 +1,12 @@
 import scrapping.conf.connector_db as conn
+import json
+import requests
+
 
 ATTRIBUTES_TO_STRING = dict(name="Name",
-                            headquarters="Headquarters localisation",
+                            headquarters_city="Headquarters localisation (city)",
+                            headquarters_country="Headquarters localisation (country)",
+                            headquarters_currency="Headquarters currency (currency)",
                             rating="Rating",
                             rating_count="Total ratings",
                             benefits_rating="Benefits Rating",
@@ -12,14 +17,16 @@ ATTRIBUTES_TO_STRING = dict(name="Name",
 
 
 class Company:
-    def __init__(self, name, headquarters=None, rating=None, rating_count=None,
+    def __init__(self, name, headquarters_city=None, headquarters_country=None, headquarters_currency=None, rating=None, rating_count=None,
                  benefits_rating=None,
                  benefits_rating_count=None, size=None, founded=None,
                  type=None, website=None, competitors=None):
         """
         init parameters
         :param name: name of the company
-        :param headquarters: headquarters localization
+        :param headquarters_city: headquarters localization (city)
+        :param headquarters_country: headquarters localization (country)
+        :param headquarters_currency: headquarters localization (currency)
         :param rating: global rating out of 5 of the company
         :param rating_count: number of ratings
         :param benefits_rating: rating concerning the benefits out of 5
@@ -31,7 +38,9 @@ class Company:
         :param competitors: existing competitors
         """
         self.name = name
-        self.headquarters = headquarters
+        self.headquarters_city = headquarters_city
+        self.headquarters_country = headquarters_country
+        self.headquarters_currency = headquarters_currency
         self.rating = rating
         self.rating_count = rating_count
         self.benefits_rating = benefits_rating
@@ -50,6 +59,10 @@ class Company:
         for key, value in data_dict.items():
             if key in vars(self):
                 self[key] = value
+            elif key == 'headquarters':
+                self.headquarters_city = value.split(',')[0].strip()
+                self.headquarters_country = value.split(',')[1].strip()
+                self.headquarters_currency = get_currency(self.headquarters_country)
 
     def __setitem__(self, key, value):
         """
@@ -70,11 +83,12 @@ class Company:
         if id_company:
             return id_company
         cur.execute(
-            "INSERT INTO companies (name, headquarters, rating, rating_count,"
+            "INSERT INTO companies (name, headquarters_city, headquarters_country, headquarters_currency, "
+            "rating, rating_count,"
             "benefits_rating, benefits_rating_count, nb_of_employees,"
             " founded, type, website, competitors) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (self.name, self.headquarters, self.rating, self.rating_count,
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (self.name, self.headquarters_city,self.headquarters_country ,self.headquarters_currency, self.rating, self.rating_count,
              self.benefits_rating, self.benefits_rating_count, self.size,
              self.founded, self.type,
              self.website, self.competitors))
@@ -114,6 +128,19 @@ def main():
                  rating_count=124)
     print(c1)
 
+
+
+def get_currency(country):
+    """Take the currency data of the country of the company on the API of the website restcountries.eu
+    :param country: country to get currency
+    :return: the name of the currency
+    """
+    #TODO handle exceptions and not working
+    URL = 'https://restcountries.eu/rest/v2/name/{}?fullText=true'.format(country)
+    r = requests.get(URL).content
+    data = json.loads(r)[0]
+    name_cur = data['currencies'][0]['name']
+    return name_cur
 
 if __name__ == '__main__':
     main()

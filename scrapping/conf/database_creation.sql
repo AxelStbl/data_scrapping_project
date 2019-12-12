@@ -6,7 +6,9 @@ SET collation_connection = 'utf8_general_ci';
 CREATE TABLE IF NOT EXISTS companies (
   id int PRIMARY KEY AUTO_INCREMENT,
   name varchar(255) UNIQUE NOT NULL,
-  headquarters varchar(255),
+  headquarters_city varchar(255),
+  headquarters_country varchar(255),
+  headquarters_currency varchar(255),
   rating float,
   rating_count int,
   benefits_rating float,
