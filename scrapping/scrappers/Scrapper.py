@@ -6,6 +6,7 @@ import re
 from selenium.common.exceptions import StaleElementReferenceException, \
     NoSuchElementException, ElementClickInterceptedException, \
     ElementNotInteractableException
+from bs4 import BeautifulSoup
 
 import scrapping.conf.properties as conf
 import scrapping.data_classes.Company as Company
@@ -108,7 +109,9 @@ class Scrapper:
             html_job_container = elt.get_attribute('innerHTML')
             time.sleep(2)
             name_company = get_name_company(elt.text)
+            city_job = get_city_job(html_job_container)
             job_id = get_job_id(html_job_container)
+            position_job = get_position(html_job_container)
 
             if job_id is not None and name_company is not None:
                 company = Company.Company(name_company)
@@ -123,7 +126,8 @@ class Scrapper:
 
                 self.scrape_data_company(elt, company)
                 company_id = company.insert_to_db()
-                job = JobOffer.JobOffer(job_id, company=company)
+                job = JobOffer.JobOffer(job_id, company=company, city=city_job,
+                                        position=position_job)
                 job.insert_to_db(company_id)
                 jobs.append(job)
                 print(job)
@@ -213,11 +217,38 @@ class Scrapper:
 def get_name_company(html_job_container):
     """find the job name from html
     :param html_job_container:
-    :return:the name of the company
+    :return: the name of the company
     """
     lines = html_job_container.splitlines()
     if len(lines) > 0:
         return lines[0]
+    return None
+
+
+def get_position(html_job_container):
+    """
+    Return job position title
+    :param html_job_container: data to scrape
+    :return: job title
+    """
+    soup = BeautifulSoup(html_job_container, 'html.parser')
+    job_position = soup.find_all(
+        class_="jobLink jobInfoItem jobTitle")  # .get_text()
+    if len(job_position) == 2:
+        return job_position[1].get_text()
+    return None
+
+
+def get_city_job(html):
+    """
+    Return the city where the job is located
+    :param html:
+    :return: city
+    """
+    soup = BeautifulSoup(html, 'html.parser')
+    city = soup.find(class_="subtle loc").get_text()
+    if city:
+        return city
     return None
 
 

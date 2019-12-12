@@ -54,11 +54,11 @@ class JobOffer:
         res += "--------------\n"
         for var in vars(self):
             if self.__getattribute__(var):
-                if var == "company":
-                    res += '\t\n'.join(self.company.__repr__().splitlines())
-                else:
+                if var != "company":
                     res += ATTRIBUTES_TO_STRING[var] + ": " + \
                            str(self.__getattribute__(var)) + "\n"
+        if self.company:
+            res += '\t\n'.join(self.company.__repr__().splitlines())
         return res
 
 

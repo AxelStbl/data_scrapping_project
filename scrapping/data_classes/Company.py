@@ -11,7 +11,7 @@ ATTRIBUTES_TO_STRING = dict(name="Name",
                             rating_count="Total ratings",
                             benefits_rating="Benefits Rating",
                             benefits_rating_count="Benefits Rating Total",
-                            size="Size", founded="Year foundation",
+                            nb_of_employees="Size", founded="Year foundation",
                             type="Company Type", website="Website",
                             competitors="Competitors")
 
@@ -19,7 +19,8 @@ ATTRIBUTES_TO_STRING = dict(name="Name",
 class Company:
     def __init__(self, name, headquarters_city=None, headquarters_country=None, headquarters_currency=None, rating=None, rating_count=None,
                  benefits_rating=None,
-                 benefits_rating_count=None, size=None, founded=None,
+                 benefits_rating_count=None, nb_of_employees=None,
+                 founded=None,
                  type=None, website=None, competitors=None):
         """
         init parameters
@@ -31,7 +32,7 @@ class Company:
         :param rating_count: number of ratings
         :param benefits_rating: rating concerning the benefits out of 5
         :param benefits_rating_count: numbers of votes for benefits rating
-        :param size: number of employees
+        :param nb_of_employees: number of employees
         :param founded: date of creation of company
         :param type: type of the company
         :param website: website of the company
@@ -45,7 +46,7 @@ class Company:
         self.rating_count = rating_count
         self.benefits_rating = benefits_rating
         self.benefits_rating_count = benefits_rating_count
-        self.size = size
+        self.nb_of_employees = nb_of_employees
         self.founded = founded
         self.type = type
         self.website = website
@@ -79,8 +80,9 @@ class Company:
         """
         db = conn.get_db_conn()
         cur = db.cursor()
-        id_company = self.find_id_company(cur)
-        if id_company:
+        id_company, company = self.find_company_by_id(cur)
+        if company is not None:
+            self.update_data_company(company, cur, db)
             return id_company
         cur.execute(
             "INSERT INTO companies (name, headquarters_city, headquarters_country, headquarters_currency, "
@@ -89,23 +91,42 @@ class Company:
             " founded, type, website, competitors) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (self.name, self.headquarters_city,self.headquarters_country ,self.headquarters_currency, self.rating, self.rating_count,
-             self.benefits_rating, self.benefits_rating_count, self.size,
+             self.benefits_rating, self.benefits_rating_count,
+             self.nb_of_employees,
              self.founded, self.type,
              self.website, self.competitors))
         db.commit()
-        return self.find_id_company(cur)
+        id_company, _ = self.find_company_by_id(cur)
+        return id_company
 
-    def find_id_company(self, cur):
+    def update_data_company(self, company, cur, db):
+        """
+        will update field by field company if necessary
+        :param company: company to update
+        :param cur: sql current session
+        :param db: database
+        """
+        for var in vars(self):
+            if company.__getattribute__(var) is None and self.__getattribute__(
+                    var) is not None:
+                cur.execute(
+                    "UPDATE companies SET {} = %s WHERE name=%s".format(
+                        var),
+                    (self.__getattribute__(var), self.name))
+        db.commit()
+
+    def find_company_by_id(self, cur):
         """
         execute request to find the id of the company
         :param cur: name of the company
         :return: id of the company
         """
-        cur.execute("SELECT id FROM companies where name = %s", (self.name,))
+        cur.execute("SELECT * FROM companies where name = %s", (self.name,))
         exist = cur.fetchall()
         if len(exist) == 1:
-            return exist[0][0]
-        return None
+            return exist[0][0], Company(
+                *exist[0][1:])  # because first element is id
+        return None, None
 
     def __repr__(self):
         """
@@ -121,7 +142,7 @@ class Company:
 
 
 def main():
-    c1 = Company("Facebook", headquarters="Palo alto", benefits_rating=3.4,
+    c1 = Company("Facebook", headquarters_city="Palo alto", benefits_rating=3.4,
                  benefits_rating_count=120,
                  founded=2004, type="Software",
                  website="https://www.facebook.com", rating=4,
