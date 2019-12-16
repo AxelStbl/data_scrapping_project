@@ -1,6 +1,7 @@
 import scrapping.conf.connector_db as conn
 import json
 import requests
+import scrapping.conf.properties as conf
 
 ATTRIBUTES_TO_STRING = dict(name="Name",
                             headquarters_city="Headquarters City",
@@ -13,6 +14,8 @@ ATTRIBUTES_TO_STRING = dict(name="Name",
                             nb_of_employees="Size", founded="Year foundation",
                             type="Company Type", website="Website",
                             competitors="Competitors")
+
+logger = conf.configure_logger()
 
 
 class Company:
@@ -160,13 +163,18 @@ def get_currency(country):
     :param country: country to get currency
     :return: the name of the currency
     """
-    # TODO handle exceptions and not working
     URL = 'https://restcountries.eu/rest/v2/name/{}?fullText=true'.format(
         country)
     r = requests.get(URL).content
-    data = json.loads(r)[0]
-    name_cur = data['currencies'][0]['name']
-    return name_cur
+    data_loaded = json.loads(r)
+
+    if type(data_loaded) == list and len(data_loaded) == 1:
+        data = data_loaded[0]
+        name_cur = data['currencies'][0]['name']
+        return name_cur
+    else:
+        logger.info("Currency not found for country ", country)
+        return None
 
 
 if __name__ == '__main__':
