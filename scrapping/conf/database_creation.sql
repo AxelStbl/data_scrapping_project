@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS job_offers(
                                          position    varchar(255),
                                          company_id  int,
                                          description TEXT,
-                                         salary      int,
                                          FOREIGN KEY (company_id) REFERENCES companies (id)
 );
 ALTER TABLE job_offers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;

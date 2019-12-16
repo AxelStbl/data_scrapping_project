@@ -3,19 +3,18 @@ import scrapping.data_classes.Company as Company
 
 ATTRIBUTES_TO_STRING = dict(job_id="ID", city="City", position="Job Title",
                             company="Company",
-                            description="Description", salary="Salary")
+                            description="Description")
 
 
 class JobOffer:
     def __init__(self, job_id, city=None, position=None, company=None,
-                 description=None, salary=None):
+                 description=None):
         """
         :param job_id: id found on the website
         :param city: city where the job offer is
         :param position: job position
         :param company: name of the company
         :param description: description found
-        :param salary: average salary
         """
         self.job_id = job_id
         self.city = city
@@ -23,7 +22,6 @@ class JobOffer:
         self.position = position
         self.company = company
         self.description = description
-        self.salary = salary
 
     def insert_to_db(self, company_id):
         """
@@ -36,13 +34,13 @@ class JobOffer:
         # duplicate key we can update the data we have
         cur.execute(
             "INSERT INTO job_offers "
-            "(job_id, city, position, company_id, description, salary) "
-            "VALUES (%s, %s, %s, %s, %s, %s)"
+            "(job_id, city, position, company_id, description) "
+            "VALUES (%s, %s, %s, %s, %s)"
             "ON DUPLICATE KEY UPDATE city=%s, position = %s,"
-            " description = %s, salary = %s",
+            " description = %s",
             (self.job_id, self.city, self.position, company_id,
-             self.description, self.salary, self.city, self.position,
-             self.description, self.salary))
+             self.description, self.city, self.position,
+             self.description))
         db.commit()
 
     def __repr__(self):
@@ -76,10 +74,9 @@ def print_jobs(jobs):
 
 def main():
     test = JobOffer(1, "paris", "Software Engineer",
-                    Company.Company("Channel", headquarters="Paris",
+                    Company.Company("Channel",
                                     rating="Rating",
-                                    benefits_rating=4.5), None,
-                    salary=5000)
+                                    benefits_rating=4.5), None)
     print(test)
 
 
