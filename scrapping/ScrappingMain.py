@@ -2,6 +2,7 @@ import argparse
 
 import scrapping.conf.properties as conf
 import scrapping.scrappers.Scrapper as sc
+import scrapping.conf.connector_db as conn
 import urllib.parse
 
 logger = conf.configure_logger()
@@ -21,6 +22,9 @@ def main():
     conf.date_path = scrapper.create_output_folder()
     scrapper.init_job_page(conf.BASE_URL)
     scrapper.scrap_data_companies()
+
+    # Close mysql connection at the end of the program
+    conn.close_db_conn()
 
     if conf.QUIT:  # not quitting for debugging purposes
         driver.quit()

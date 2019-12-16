@@ -7,6 +7,13 @@ import platform
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
+# DATABASE CONNECTION
+USERNAME = "username"
+PASSWORD = "password"
+HOST = "localhost"
+AUTH_PLUGIN = 'mysql_native_password'
+SCRIPT_CREATION = 'database_creation.sql'
+
 # We are using firefox headless with this option
 HEADLESS = True
 QUIT = True
