@@ -2,6 +2,7 @@ import scrapping.conf.connector_db as conn
 import json
 import requests
 import scrapping.conf.properties as conf
+import urllib.parse
 
 ATTRIBUTES_TO_STRING = dict(name="Name",
                             headquarters_city="Headquarters City",
@@ -163,9 +164,9 @@ def get_currency(country):
     :param country: country to get currency
     :return: the name of the currency
     """
-    URL = 'https://restcountries.eu/rest/v2/name/{}?fullText=true'.format(
-        country)
-    r = requests.get(URL).content
+    url = conf.REST_COUNTRIES_EU.format(
+        urllib.parse.quote(country))
+    r = requests.get(url).content
     data_loaded = json.loads(r)
 
     if type(data_loaded) == list and len(data_loaded) == 1:

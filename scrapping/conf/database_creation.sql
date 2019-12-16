@@ -21,14 +21,14 @@ CREATE TABLE IF NOT EXISTS companies (
 );
 ALTER TABLE companies CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-CREATE TABLE IF NOT EXISTS job_offers (
-  id int PRIMARY KEY AUTO_INCREMENT,
-  job_id BIGINT UNIQUE NOT NULL,
-  city varchar(255),
-  position varchar(255),
-  company_id int,
-  description varchar(255),
-  salary int,
-  FOREIGN KEY (company_id) REFERENCES companies (id)
+CREATE TABLE IF NOT EXISTS job_offers(
+                                         id          int PRIMARY KEY AUTO_INCREMENT,
+                                         job_id      BIGINT UNIQUE NOT NULL,
+                                         city        varchar(255),
+                                         position    varchar(255),
+                                         company_id  int,
+                                         description TEXT,
+                                         salary      int,
+                                         FOREIGN KEY (company_id) REFERENCES companies (id)
 );
 ALTER TABLE job_offers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;

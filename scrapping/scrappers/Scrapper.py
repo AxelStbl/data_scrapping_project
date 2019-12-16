@@ -2,12 +2,14 @@ import datetime
 import time
 import os
 import re
+import urllib.parse
 
 from selenium.common.exceptions import StaleElementReferenceException, \
     NoSuchElementException, ElementClickInterceptedException, \
     ElementNotInteractableException
 from bs4 import BeautifulSoup
-
+import json
+import requests
 import scrapping.conf.properties as conf
 import scrapping.data_classes.Company as Company
 import scrapping.data_classes.JobOffer as JobOffer
@@ -112,6 +114,7 @@ class Scrapper:
             city_job = get_city_job(html_job_container)
             job_id = get_job_id(html_job_container)
             position_job = get_position(html_job_container)
+            job_description = get_summary_job(position_job)
 
             if job_id is not None and name_company is not None:
                 company = Company.Company(name_company)
@@ -127,7 +130,8 @@ class Scrapper:
                 self.scrape_data_company(elt, company)
                 company_id = company.insert_to_db()
                 job = JobOffer.JobOffer(job_id, company=company, city=city_job,
-                                        position=position_job)
+                                        position=position_job,
+                                        description=job_description)
                 job.insert_to_db(company_id)
                 jobs.append(job)
                 print(job)
@@ -273,3 +277,27 @@ def get_job_id(html_job_container):
     if match:
         return match.group(1)
     return None
+
+
+def get_summary_job(job):
+    """
+    Get a short summary about the specified position
+    :param job: the job we want to have the description
+    :return: a short extract from wikipedia if found else None
+    """
+    url = conf.WIKIPEDIA_URL.format(
+        urllib.parse.quote(job))
+
+    r = requests.get(url).content
+    data_loaded = json.loads(r)
+    if type(data_loaded) == dict and data_loaded['title'] != 'Not found.':
+        summary = data_loaded['extract']
+        if len(summary) < 65535:
+            return summary
+        else:
+            logger.info('Summary for job is too long to fit into the table',
+                        job)
+            return None
+    else:
+        logger.info('Description not found for the following job', job)
+        return None

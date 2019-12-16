@@ -25,6 +25,10 @@ BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=" \
            "2421090&locKeyword=Tel%20Aviv&sc.keyword="
 LOGGING_LEVEL = logging.ERROR
 
+# API CALLS:
+WIKIPEDIA_URL = 'https://en.wikipedia.org/api/rest_v1/page/summary/{}'
+REST_COUNTRIES_EU = 'https://restcountries.eu/rest/v2/name/{}?fullText=true'
+
 
 # website urls
 def url_job():
