@@ -1,23 +1,35 @@
-Event Planner
-Meeting Planner
-Purchasing Manager
-Receptionist
-Secretary Assistant
-Administrative Assistant
-Market Research Analyst
-Advertising Managers
-Promotions Managers
-Advertising Sales Agent
-Editor
-Graphic Designer
-Interpreter and Translator
-Public Relations Specialist
-Social Media Manager
-Writer
-Editor
-Architect
-Construction Laborer
-Electrician
+Project Manager
+Construction Manager
+Security Engineer
+Strategy Manager
+Operations Manager
+Sales Engineer
+Sales Manager
+Physician Assistant
+Mechanical Engineer
+Software Engineer
+HR Manager
+Data Engineer
+Devops Engineer
+Product Manager
+Marketing Manager
+Program Manager
+Nursing Manager
+Data Scientist
+Applications developer
+Database administrator
+Game developer
+Multimedia programmer
+Web developer
+Web designer
+Software engineer
+Software tester
+Application analyst
+IT consultant
+IT technical support officer
+IT sales professional
+Sound designer
+Systems analyst
 Environmental Engineer
 Janitor
 Mechanical Engineer
