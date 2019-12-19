@@ -1,0 +1,117 @@
+Event Planner
+Meeting Planner
+Purchasing Manager
+Receptionist
+Secretary Assistant
+Administrative Assistant
+Market Research Analyst
+Advertising Managers
+Promotions Managers
+Advertising Sales Agent
+Editor
+Graphic Designer
+Interpreter and Translator
+Public Relations Specialist
+Social Media Manager
+Writer
+Editor
+Architect
+Construction Laborer
+Electrician
+Environmental Engineer
+Janitor
+Mechanical Engineer
+Plumber
+Fashion Designer
+Interior Designer
+Photographer
+Chemist
+Curator
+Guidance Counselor
+Hydrologist
+Librarian
+Special Education Teacher
+School Principal
+Teacher
+Teacher Assistant
+Accountant
+Actuary
+Bank Teller
+Bookkeeping Clerk
+Accounting Clerk
+Auditing Clerk
+Budget Analyst
+Claims Adjuster
+Appraiser
+Examiner
+Investigator
+Financial Advisor
+Insurance Underwriter
+Loan Officer
+Bartender
+Chef
+Waiter
+Dental Hygienist
+Dentist
+Diagnostic Medical Sonographer
+Dietitian
+Nutritionist
+Doctor
+EMTs and Paramedics
+Health Educator
+Home Health Aide
+Licensed Practical Nurse
+Medical Assistant
+Medical Laboratory Technician
+Occupational Therapist
+Pharmacist
+Pharmacy Technician
+Physician Assistant
+Physical Therapist
+Physical Therapy Assistant
+Registered Nurse
+Consultant
+Human Resources Manager
+Computer Programmer
+Software Engineer
+Computer Systems Analyst
+Database Administrator
+Software Developer
+Web Developer
+Correctional Officer
+Court Reporter
+Firefighter
+Fundraiser
+Judge
+Lawyer
+Paralegal and Legal Assistant
+Police Officer
+Postal Service Worker
+Security Guard
+Social Worker
+Animal Groomer
+Auto Mechanic
+Cosmetologist
+Fitness Trainer
+Funeral Director
+Hairdressers, Hairstylists, and Cosmetologists
+Marriage and Family Therapist
+Veterinarian
+Cashier
+Customer Service Representative
+Retail Salesperson
+Retail Supervisor
+Aircraft Mechanic
+Airline Pilot
+Airport Security Screener
+Flight Attendant
+
+
+
+
+
+
+
+
+
+

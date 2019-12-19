@@ -92,7 +92,8 @@ class Scrapper:
             name_category = tab.text
             tab_scrapper = TabScrapping.TabScrapping(html_detail_tab)
             tab_scrapper.parse_tab(company, name_category)
-            self.save_data_to_file(html_detail_tab, name_category)
+            if conf.SAVE_HTML_TO_FILE:
+                self.save_data_to_file(html_detail_tab, name_category)
 
     def scrap_data_companies(self):
         """Will scrape and then print each data collected

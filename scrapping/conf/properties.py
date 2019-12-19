@@ -18,6 +18,8 @@ SCRIPT_CREATION = 'database_creation.sql'
 HEADLESS = True
 QUIT = True
 SAVED_DATA = "saved_data"
+SAVE_HTML_TO_FILE = True
+
 RECAP = True  # Display all the job offers again at the end of the program
 WAITING_TIME = 1  # in seconds depending of your connexion
 JOB = 'Software Engineer'
@@ -79,3 +81,4 @@ def get_geckodriver():
         driver = webdriver.Firefox(options=options,
                                    executable_path=executable_path)
     return driver
+
