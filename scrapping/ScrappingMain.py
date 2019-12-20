@@ -20,7 +20,7 @@ def main():
         return
     scrapper = sc.Scrapper(driver, conf.SAVED_DATA)
     conf.date_path = scrapper.create_output_folder()
-    scrapper.init_job_page(conf.BASE_URL)
+    scrapper.init_job_page(conf.URL_TO_SCRAPE)
     scrapper.scrap_data_companies()
 
     # Close mysql connection at the end of the program
@@ -64,7 +64,7 @@ def arg_parser():
     conf.QUIT = args.quit
     conf.RECAP = args.no_recap
     conf.JOB = urllib.parse.quote(args.job)
-    conf.BASE_URL = conf.url_job()
+    conf.URL_TO_SCRAPE = conf.url_job()
     conf.SAVED_DATA = args.saved_data
     conf.SAVE_HTML_TO_FILE = args.no_save_html
 
