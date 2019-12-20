@@ -102,7 +102,8 @@ class Scrapper:
             "jobContainer")
         jobs = []
         if len(list_job_offers) == 0:
-            print("There is nothing  to scrap for the job requested")
+            print("There is nothing  to scrap for ", conf.URL_TO_SCRAPE,
+                  "that was requested")
             return
 
         for i, elt in enumerate(list_job_offers):
@@ -146,6 +147,7 @@ class Scrapper:
         :param base_url: url you want to open
         """
         self.driver.get(base_url)
+        print(base_url)
         self.driver.implicitly_wait(100)
 
     def remove_sign_up_prompt(self):

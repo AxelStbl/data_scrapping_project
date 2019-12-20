@@ -25,7 +25,7 @@ WAITING_TIME = 1  # in seconds depending of your connexion
 JOB = 'Software Engineer'
 BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=" \
            "2421090&locKeyword=Tel%20Aviv&sc.keyword="
-LOGGING_LEVEL = logging.ERROR
+LOGGING_LEVEL = logging.DEBUG
 URL_TO_SCRAPE = BASE_URL + JOB
 
 # API CALLS:
