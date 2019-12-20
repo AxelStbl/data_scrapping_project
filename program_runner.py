@@ -11,7 +11,7 @@ for job in jobs:
                 '-no_save_html']
     try:
         p = os.popen(
-            'python -m scrapping -job "{}" -no_recap -no_save_html'.format(
+            'python -m scrapping -headless -job "{}" -no_recap -no_save_html'.format(
                 job))
         print(p.read())
         # scrapping.ScrappingMain.main()
