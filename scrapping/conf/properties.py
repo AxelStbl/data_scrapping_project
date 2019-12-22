@@ -25,12 +25,20 @@ WAITING_TIME = 1  # in seconds depending of your connexion
 JOB = 'Software Engineer'
 BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=" \
            "2421090&locKeyword=Tel%20Aviv&sc.keyword="
+# NEW YORK
+# BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=1132348&sc.keyword="
+# San Francisco
+# BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=1147401&sc.keyword="
+# SEATLE
+# BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=1150505&sc.keyword="
+
 LOGGING_LEVEL = logging.DEBUG
 URL_TO_SCRAPE = BASE_URL + JOB
 
 # API CALLS:
 WIKIPEDIA_URL = 'https://en.wikipedia.org/api/rest_v1/page/summary/{}'
 REST_COUNTRIES_EU = 'https://restcountries.eu/rest/v2/name/{}?fullText=true'
+
 
 # website urls
 def url_job():
