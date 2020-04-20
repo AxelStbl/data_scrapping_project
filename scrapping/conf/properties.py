@@ -32,7 +32,7 @@ BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=" \
 # SEATLE
 # BASE_URL = "https://www.glassdoor.com/Job/jobs.htm?locT=C&locId=1150505&sc.keyword="
 
-LOGGING_LEVEL = logging.DEBUG
+LOGGING_LEVEL = logging.ERROR
 URL_TO_SCRAPE = BASE_URL + JOB
 
 # API CALLS:
