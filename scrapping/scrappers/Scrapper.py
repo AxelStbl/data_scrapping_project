@@ -19,11 +19,13 @@ logger = conf.configure_logger()
 
 
 class Scrapper:
-    def __init__(self, driver, path_to_save):
+    def __init__(self, driver, path_to_save, db_connection):
         """
         Initiate the scrapper
+        :param db_connection: the db we want to connect to
         :param driver: the selenium driver
         """
+        self.db_connection = db_connection
         self.driver = driver
         self.date_path = path_to_save
         self.current_path = path_to_save
@@ -130,11 +132,11 @@ class Scrapper:
                         elt)  # link since we are already seeing it
 
                 self.scrape_data_company(elt, company)
-                company_id = company.insert_to_db()
+                company_id = company.insert_to_db(self.db_connection)
                 job = JobOffer.JobOffer(job_id, company=company, city=city_job,
                                         position=position_job,
                                         description=job_description)
-                job.insert_to_db(company_id)
+                job.insert_to_db(company_id, self.db_connection)
                 jobs.append(job)
                 print(job)
             else:
@@ -147,7 +149,6 @@ class Scrapper:
         :param base_url: url you want to open
         """
         self.driver.get(base_url)
-        print(base_url)
         self.driver.implicitly_wait(100)
 
     def remove_sign_up_prompt(self):
@@ -276,7 +277,7 @@ def get_job_id(html_job_container):
     :param html_job_container:
     :return: the id of the job or None if not found
     """
-    match = re.search(r'data-job-id="(\d*)"', html_job_container)
+    match = re.search(r'jobListingId=(\d*)"', html_job_container)
     if match:
         return match.group(1)
     return None
@@ -286,8 +287,10 @@ def get_summary_job(job):
     """
     Get a short summary about the specified position
     :param job: the job we want to have the description
-    :return: a short extract from wikipedia if found else None
+    :return: a short extract from Wikipedia if found else None
     """
+    if job is None:
+        return None
     url = conf.WIKIPEDIA_URL.format(
         urllib.parse.quote(job))
 

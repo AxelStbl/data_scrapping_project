@@ -1,4 +1,3 @@
-import scrapping.conf.connector_db as conn
 import scrapping.data_classes.Company as Company
 
 ATTRIBUTES_TO_STRING = dict(job_id="ID", city="City", position="Job Title",
@@ -23,12 +22,12 @@ class JobOffer:
         self.company = company
         self.description = description
 
-    def insert_to_db(self, company_id):
+    def insert_to_db(self, company_id, db):
         """
         insert to db the job offer with the link to the company
+        :param db: the database
         :param company_id: the id in db of the company
         """
-        db = conn.get_db_conn()
         cur = db.cursor()
         # We are continuously improving our scrapping so on
         # duplicate key we can update the data we have

@@ -18,12 +18,6 @@ class ConnectorDB:
         )
         self.db = my_db
 
-    def close_db_con(self):
-        """
-        close connection to cb
-        """
-        self.db.close()
-
     def set_db(self):
         """
         use scrapping database
@@ -49,31 +43,28 @@ class ConnectorDB:
         self.db.commit()
         self.db.close()
 
+    def get_db_conn(self):
+        """
+        configure DB connection
+        :return:  db connector
+        """
+        if not self.db.database:
+            self.set_db()
+        return self.db
 
-# This is a global variable so that we have only one connection open at a time
-conn = ConnectorDB()
-
-
-def get_db_conn():
-    """
-    configure DB connection
-    :return:  db connector
-    """
-    if not conn.db.database:
-        conn.set_db()
-    return conn.db
-
-
-def close_db_conn():
-    """Close db connection"""
-    conn.close_db_con()
+    def __del__(self):
+        """
+        close connection to db
+        """
+        self.db.close()
 
 
 def main():
     """This file can be used as a standalone
      to create the database structure"""
+    conn = ConnectorDB()
     conn.creation_db_script()
-    conn.close_db_con()
+    conn.__del__()
 
 
 if __name__ == '__main__':

@@ -1,8 +1,9 @@
-import scrapping.conf.connector_db as conn
 import json
-import requests
-import scrapping.conf.properties as conf
 import urllib.parse
+
+import requests
+
+import scrapping.conf.properties as conf
 
 ATTRIBUTES_TO_STRING = dict(name="Name",
                             headquarters_city="Headquarters City",
@@ -78,12 +79,12 @@ class Company:
         """
         self.__setattr__(key, value)
 
-    def insert_to_db(self):
+    def insert_to_db(self, db):
         """
         Insert data from company object to the database
+        :param db: The database where it should be inserted
         :return: id of the company created or fetched
         """
-        db = conn.get_db_conn()
         cur = db.cursor()
         id_company, company = self.find_company_by_id(cur)
         if company is not None:
